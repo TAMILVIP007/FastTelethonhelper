@@ -27,8 +27,7 @@ def progress_bar_str(done, total):
     for i in range(round(percent)//10):
         strin[i] = "█"
     strin = "".join(strin)
-    final = f"Percent: {percent}%\n{human_readable_size(done)}/{human_readable_size(total)}\n{strin}"
-    return final 
+    return f"Percent: {percent}%\n{human_readable_size(done)}/{human_readable_size(total)}\n{strin}" 
 
 def human_readable_size(size, decimal_places=2):
     for unit in ['B', 'KB', 'MB', 'GB', 'TB', 'PB']:
@@ -56,8 +55,8 @@ async def fast_download(client, msg, reply = None, download_folder = None, progr
 
     if not filename:
         filename = "video.mp4"
-                    
-    if download_folder == None:
+
+    if download_folder is None:
         download_location = dir + filename
     else:
         download_location = download_folder + filename 
@@ -80,12 +79,13 @@ async def fast_download(client, msg, reply = None, download_folder = None, progr
 
 async def fast_upload(client, file_location, reply=None, name=None, progress_bar_function = progress_bar_str):
     timer = Timer()
-    if name == None:
+    if name is None:
         name = file_location.split("/")[-1]
     async def progress_bar(downloaded_bytes, total_bytes):
         if timer.can_send():
             data = progress_bar_function(downloaded_bytes, total_bytes)
             await reply.edit(f"Uploading...\n{data}")
+
     if reply != None:
         with open(file_location, "rb") as f:
             the_file = await upload_file(
@@ -101,5 +101,5 @@ async def fast_upload(client, file_location, reply=None, name=None, progress_bar
                 file=f,
                 name=name,
             )
-        
+
     return the_file
